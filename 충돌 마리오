@@ -1,0 +1,116 @@
+# python game with pygame : Jumping mario
+# by. BlockDMask
+import pygame
+import sys
+
+# step1 : set screen, fps
+# step2 : show mario, jump mario
+# step3 : show tree, move tree
+
+pygame.init()
+pygame.display.set_caption('Jumping mario')
+MAX_WIDTH = 800
+MAX_HEIGHT = 400
+
+
+def main():
+    # set screen, fps
+    screen = pygame.display.set_mode((MAX_WIDTH, MAX_HEIGHT))
+    fps = pygame.time.Clock()
+
+    # dino
+    imgMario1 = pygame.image.load('images/mario1.png')
+    imgMario2 = pygame.image.load('images/mario2.png')
+    mario_height = imgMario1.get_size()[1]
+    mario_bottom = MAX_HEIGHT - mario_height
+    mario_x = 50
+    mario_y = mario_bottom
+    jump_top = 200
+    leg_swap = True
+    is_bottom = True
+    is_go_up = False
+
+    # tree
+    imgTree = pygame.image.load('images/tree.png')
+    tree_height = imgTree.get_size()[1]
+    tree_x = MAX_WIDTH
+    tree_y = MAX_HEIGHT - tree_height
+
+    while True:
+        screen.fill((255, 255, 255))
+
+        # event check
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.KEYDOWN:
+                if is_bottom:
+                    is_go_up = True
+                    is_bottom = False
+
+        # mario move
+        if is_go_up:
+            mario_y -= 10.0
+        elif not is_go_up and not is_bottom:
+            mario_y += 10.0
+
+        # mario top and bottom check
+        if is_go_up and mario_y <= jump_top:
+            is_go_up = False
+
+        if not is_bottom and mario_y >= mario_bottom:
+            is_bottom = True
+            mario_y = mario_bottom
+
+        # tree move
+        tree_x -= 12.0
+        if tree_x <= 0:
+            tree_x = MAX_WIDTH
+
+        # draw tree
+        screen.blit(imgTree, (tree_x, tree_y))
+
+        # draw mario
+        if leg_swap:
+            screen.blit(imgMario1, (mario_x, mario_y))
+            leg_swap = False
+        else:
+            screen.blit(imgMario2, (mario_x, mario_y))
+            leg_swap = True
+
+        # update
+        pygame.display.update()
+        fps.tick(30)
+
+
+         # 공 위치 정의
+    for mario1_idx, mario1_val in enumerate(balls):
+        mario1_pos_x = mario1_val["pos_x"]
+        mario1_pos_y = mario1_val["pos_y"]
+        mario1_img_idx = mario1_val["img_idx"]
+
+        mario1_size = mario1_imagesmario1[_img_idx].get_rect().size
+        mario1_width = mario1_size[0]
+        mario1_height = mario1_size[1]
+
+
+        # 세로 위치
+        # 스테이지에 튕겨서 올라가는 처리
+        if mario1_pos_y == tree_height - tree_height - mario1_height:
+            mario1_val["to_y"] =mario1_val["init_spd_y"]
+        else: # 그 외의 모든 경우에는 속도를 증가
+            mario1_val["to_y"] += 0.5
+        
+        mario1_val["pos_x"] += mario1_val["to_x"]
+        mario1_val["pos_y"] += mario1_val["to_y"]
+        if mario1_val["pos_x"] == tree_x:
+            game_over_image = large_font.render('게임 종료', True, RED)
+            screen.blit(game_over_image, game_over_image.get_rect(centerx=SCREEN_WIDTH // 2, centery=SCREEN_HEIGHT // 2))
+            pygame.quit()
+            sys.exit()
+            
+
+
+if __name__ == '__main__':
+    main()
