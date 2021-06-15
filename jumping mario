@@ -82,7 +82,12 @@ def main():
         # update
         pygame.display.update()
         fps.tick(30)
-
-
-if __name__ == '__main__':
-    main()
+        
+        if mario_x == tree_x:
+            game_over_image = large_font.render('게임 종료', True, RED)
+            screen.blit(game_over_image, game_over_image.get_rect(centerx=SCREEN_WIDTH // 2, centery=SCREEN_HEIGHT // 2))
+            
+            
+            
+            if __name__ == '__main__':
+            main()
